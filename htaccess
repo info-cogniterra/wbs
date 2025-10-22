@@ -1,0 +1,51 @@
+# Force HTTPS + canonical (no-www -> https://cogniterra.cz)
+RewriteEngine On
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.cogniterra\.cz$ [NC]
+RewriteRule ^ https://cogniterra.cz%{REQUEST_URI} [L,R=301]
+
+# Security headers
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# Gzip compression
+<IfModule mod_deflate.c>
+ AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache headers
+<IfModule mod_expires.c>
+ ExpiresActive On
+ 
+ # Existující pravidla
+ ExpiresByType text/css "access plus 7 days"
+ ExpiresByType application/javascript "access plus 7 days"
+ ExpiresByType image/webp "access plus 30 days"
+ ExpiresByType image/png "access plus 30 days"
+ ExpiresByType image/svg+xml "access plus 30 days"
+ ExpiresByType image/x-icon "access plus 30 days"
+ 
+ # ⭐ PŘIDEJ TYTO ŘÁDKY ⭐
+ ExpiresByType video/mp4 "access plus 30 days"
+ ExpiresByType text/javascript "access plus 7 days"
+ ExpiresByType application/json "access plus 1 day"
+</IfModule>
+
+# ⭐ PŘIDEJ TUTO SEKCI ⭐
+# Cache-Control pro statické assety
+<FilesMatch "\.(mp4|webm|js|css|webp|png|jpg|jpeg|svg|ico|woff2|woff|ttf)$">
+  Header set Cache-Control "public, max-age=604800, immutable"
+</FilesMatch>
+
+# ⭐ PŘIDEJ TUTO SEKCI ⭐
+# Preload důležité zdroje
+<IfModule mod_headers.c>
+  <FilesMatch "cogniterra-hero\.mp4$">
+    Header set Link "</cogniterra-hero.mp4>; rel=preload; as=video" 
+  </FilesMatch>
+</IfModule>
