@@ -1,0 +1,15 @@
+<?php
+// /private/isns-config.php (sample)
+return [
+  'SMTP_ENABLED'  => true,
+  'SMTP_HOST'     => 'smtp.yourprovider.cz',
+  'SMTP_PORT'     => 587,
+  'SMTP_USERNAME' => 'info@cogniterra.cz',
+  'SMTP_PASSWORD' => '*** app password ***',
+  'SMTP_FROM'     => 'info@cogniterra.cz',
+  'SMTP_FROMNAME' => 'Cogniterra Group',
+  'TO_ADDRESS'    => 'info@cogniterra.cz',
+  'TO_NAME'       => 'Cogniterra Group – dotazník',
+  'DEBUG_KEY'     => 'set-your-random-debug-key',
+  'DEBUG_BCC'    => '',
+];
